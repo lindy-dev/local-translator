@@ -1,0 +1,13 @@
+[project]
+name = "translator"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "kokoro-onnx>=0.3.3",
+    "pipecat-ai[ollama,silero,whisper]>=0.0.74",
+    "pyaudio>=0.2.14",
+    "soundfile>=0.13.1",
+    "websockets>=15.0.1",
+]
