@@ -27,12 +27,12 @@ from pipecat.pipeline.task import PipelineTask
 from kokoro import KokoroTTSService
 from pipecat.transports.local.audio import LocalAudioTransport, LocalAudioTransportParams
 
-class TranscriptionLogger(FrameProcessor):
-    async def process_frame(self, frame: Frame, direction: FrameDirection):
-        await super().process_frame(frame, direction)
+# class TranscriptionLogger(FrameProcessor):
+#     async def process_frame(self, frame: Frame, direction: FrameDirection):
+#         await super().process_frame(frame, direction)
 
-        if isinstance(frame, TranscriptionFrame):
-            print(f"Transcription: {frame.text}")
+#         if isinstance(frame, TranscriptionFrame):
+#             print(f"Transcription: {frame.text}")
 
 async def main():
     # Configure local Ollama service
@@ -70,8 +70,8 @@ async def main():
         messages=[
             {
                 "role": "system",
-                "content": """You are a helpful translation teacher running locally.
-                Be concise and efficient in your responses while maintaining helpfulness. Do not output special characters such as asterisks or hash symbols as they are hard to parse via audio"""
+                "content": """You are a helpful Spanish translation voicebot. Limit your responses to 2-3 sentences. Translate between English and Spanish. Respond in the same language. 
+                Be concise and efficient in your responses while maintaining helpfulness. Do not output special characters such as "*" or "#" symbols as they are hard to parse via audio"""
             }
         ],
         # tools=tools
@@ -117,12 +117,9 @@ async def main():
     task = PipelineTask(pipeline,params=PipelineParams(
             enable_metrics=True,
             enable_usage_metrics=True,
-            allow_interruptions=False,
+            allow_interruptions=True,
         ),)
-    async def say_something():
-        await asyncio.sleep(1)
-        await task.queue_frames([TTSSpeakFrame("Hello there, how is it going!"), TTSSpeakFrame("I'm Marmik, nice to meet you!"), EndFrame()])
-
+    
     runner = PipelineRunner()
     await runner.run(task)
 
